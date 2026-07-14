@@ -13,16 +13,17 @@ type PastLife = {
 
 type Result = {
   name: string;
-  record: PastLife;
-  intro: string;
+  tone: { label: string; emoji: string };
+  composition: string;
+  seed: PastLife;
 };
 
-const FIELDS: { key: keyof PastLife; label: string; icon: string }[] = [
-  { key: "being", label: "전생의 직업 또는 존재", icon: "🧬" },
-  { key: "era", label: "시대", icon: "⏳" },
-  { key: "cause", label: "사인 (죽은 이유)", icon: "🥀" },
-  { key: "achievement", label: "전생의 업적", icon: "🏆" },
-  { key: "memory", label: "사람들의 기억", icon: "🕯️" },
+const SEED_FIELDS: { key: keyof PastLife; label: string }[] = [
+  { key: "being", label: "존재" },
+  { key: "era", label: "시대" },
+  { key: "cause", label: "사인" },
+  { key: "achievement", label: "업적" },
+  { key: "memory", label: "기억" },
 ];
 
 export default function Home() {
@@ -31,9 +32,8 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    const trimmed = name.trim();
+  async function run(targetName: string) {
+    const trimmed = targetName.trim();
     if (!trimmed) return;
 
     setLoading(true);
@@ -56,10 +56,17 @@ export default function Home() {
     }
   }
 
+  function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    run(name);
+  }
+
   return (
     <main className="card">
       <h1>🔮 전생 이야기</h1>
-      <p className="subtitle">이름을 입력하면 그 사람의 전생 기록을 펼쳐 보여드립니다.</p>
+      <p className="subtitle">
+        이름을 넣으면 GPT가 매번 다른 뉘앙스로 전생을 작문합니다.
+      </p>
 
       <form onSubmit={handleSubmit}>
         <input
@@ -71,31 +78,45 @@ export default function Home() {
           disabled={loading}
         />
         <button type="submit" disabled={loading || !name.trim()}>
-          {loading ? "점치는 중…" : "전생 보기"}
+          {loading ? "작문 중…" : "전생 보기"}
         </button>
       </form>
 
-      {loading && <p className="loading">✨ 전생의 실타래를 풀어내는 중…</p>}
+      {loading && <p className="loading">✨ 전생을 새로 써 내려가는 중…</p>}
       {error && <p className="error">{error}</p>}
 
       {result && (
         <div className="result">
-          <p className="result-name">
-            <b>{result.name}</b> 님의 전생
-          </p>
-
-          {result.intro && <p className="intro">{result.intro}</p>}
-
-          <div className="fields">
-            {FIELDS.map((f) => (
-              <div className="field" key={f.key}>
-                <span className="field-label">
-                  {f.icon} {f.label}
-                </span>
-                <span className="field-value">{result.record[f.key]}</span>
-              </div>
-            ))}
+          <div className="result-head">
+            <span className="result-name">
+              <b>{result.name}</b> 님의 전생
+            </span>
+            <span className="tone-badge">
+              {result.tone.emoji} {result.tone.label}
+            </span>
           </div>
+
+          <p className="composition">{result.composition}</p>
+
+          <div className="seed">
+            <span className="seed-title">🌱 전생 씨앗</span>
+            <div className="seed-chips">
+              {SEED_FIELDS.map((f) => (
+                <span className="chip" key={f.key}>
+                  <b>{f.label}</b> {result.seed[f.key]}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <button
+            type="button"
+            className="reroll"
+            onClick={() => run(result.name)}
+            disabled={loading}
+          >
+            🎲 다른 뉘앙스로 다시 쓰기
+          </button>
         </div>
       )}
     </main>

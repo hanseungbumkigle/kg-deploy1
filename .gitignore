@@ -33,3 +33,6 @@ next-env.d.ts
 
 # claude local settings
 .claude/settings.local.json
+
+/deploy_key_kgdeploy1
+/deploy_key_kgdeploy1.pub

@@ -96,47 +96,82 @@ button:disabled {
   animation: fadeIn 0.4s ease;
 }
 
+.result-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
 .result-name {
-  font-size: 18px;
-  margin-bottom: 12px;
+  font-size: 17px;
 }
 
 .result-name b {
   color: #d9bcff;
 }
 
-.intro {
-  line-height: 1.8;
-  font-size: 15px;
-  font-style: italic;
-  opacity: 0.92;
-  margin-bottom: 18px;
-  padding-bottom: 16px;
-  border-bottom: 1px dashed rgba(255, 255, 255, 0.15);
+.tone-badge {
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.35), rgba(192, 132, 252, 0.35));
+  border: 1px solid rgba(217, 188, 255, 0.4);
+  white-space: nowrap;
 }
 
-.fields {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+.composition {
+  line-height: 1.9;
+  font-size: 15.5px;
+  white-space: pre-wrap;
+  word-break: keep-all;
 }
 
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+.seed {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.15);
 }
 
-.field-label {
+.seed-title {
+  display: block;
   font-size: 12px;
   opacity: 0.6;
-  letter-spacing: 0.02em;
+  margin-bottom: 8px;
 }
 
-.field-value {
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 1.5;
+.seed-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  font-size: 12.5px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  opacity: 0.9;
+}
+
+.chip b {
+  color: #b58cff;
+  margin-right: 4px;
+}
+
+.reroll {
+  margin-top: 18px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.reroll:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.14);
 }
 
 .error {
