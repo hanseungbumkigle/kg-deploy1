@@ -1,0 +1,162 @@
+{
+  "ISTJ": {
+    "best": {
+      "type": "ESTP",
+      "name": "션"
+    },
+    "worst": {
+      "type": "ENFP",
+      "name": "밥"
+    }
+  },
+  "ISFJ": {
+    "best": {
+      "type": "ESFP",
+      "name": "코코"
+    },
+    "worst": {
+      "type": "ENTP",
+      "name": "엘론"
+    }
+  },
+  "INFJ": {
+    "best": {
+      "type": "ENFP",
+      "name": "밥"
+    },
+    "worst": {
+      "type": "ESTP",
+      "name": "션"
+    }
+  },
+  "INTJ": {
+    "best": {
+      "type": "ENTP",
+      "name": "엘론"
+    },
+    "worst": {
+      "type": "ESFP",
+      "name": "코코"
+    }
+  },
+  "ISTP": {
+    "best": {
+      "type": "ESTJ",
+      "name": "잭슨"
+    },
+    "worst": {
+      "type": "ENFJ",
+      "name": "제시"
+    }
+  },
+  "ISFP": {
+    "best": {
+      "type": "ESFJ",
+      "name": "핑키"
+    },
+    "worst": {
+      "type": "ENTJ",
+      "name": "도나"
+    }
+  },
+  "INFP": {
+    "best": {
+      "type": "ENFJ",
+      "name": "제시"
+    },
+    "worst": {
+      "type": "ESTJ",
+      "name": "잭슨"
+    }
+  },
+  "INTP": {
+    "best": {
+      "type": "ENTJ",
+      "name": "도나"
+    },
+    "worst": {
+      "type": "ESFJ",
+      "name": "핑키"
+    }
+  },
+  "ESTP": {
+    "best": {
+      "type": "ISTJ",
+      "name": "벨"
+    },
+    "worst": {
+      "type": "INFJ",
+      "name": "루"
+    }
+  },
+  "ESFP": {
+    "best": {
+      "type": "ISFJ",
+      "name": "마샤"
+    },
+    "worst": {
+      "type": "INTJ",
+      "name": "니코"
+    }
+  },
+  "ENFP": {
+    "best": {
+      "type": "INFJ",
+      "name": "루"
+    },
+    "worst": {
+      "type": "ISTJ",
+      "name": "벨"
+    }
+  },
+  "ENTP": {
+    "best": {
+      "type": "INTJ",
+      "name": "니코"
+    },
+    "worst": {
+      "type": "ISFJ",
+      "name": "마샤"
+    }
+  },
+  "ESTJ": {
+    "best": {
+      "type": "ISTP",
+      "name": "조지"
+    },
+    "worst": {
+      "type": "INFP",
+      "name": "잭잭"
+    }
+  },
+  "ESFJ": {
+    "best": {
+      "type": "ISFP",
+      "name": "러비"
+    },
+    "worst": {
+      "type": "INTP",
+      "name": "톰"
+    }
+  },
+  "ENFJ": {
+    "best": {
+      "type": "INFP",
+      "name": "잭잭"
+    },
+    "worst": {
+      "type": "ISTP",
+      "name": "조지"
+    }
+  },
+  "ENTJ": {
+    "best": {
+      "type": "INTP",
+      "name": "톰"
+    },
+    "worst": {
+      "type": "ISFP",
+      "name": "러비"
+    }
+  }
+}

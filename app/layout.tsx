@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "전생 이야기 | Past Life",
-  description: "이름을 넣으면 GPT가 당신의 전생을 이야기해 드립니다.",
+  title: "나와 닮은 코코비 캐릭터 찾기",
+  description: "간단한 질문에 답하면 당신과 꼭 닮은 코코비 캐릭터를 찾아드려요.",
 };
 
 export default function RootLayout({
