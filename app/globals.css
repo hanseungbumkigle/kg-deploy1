@@ -138,36 +138,60 @@ button {
   box-shadow: 0 3px 0 #e0a800, 0 6px 12px rgba(224, 168, 0, 0.3);
 }
 
-/* center / loading */
-.center {
-  text-align: center;
-  padding: 60px 30px;
+/* quiz / loading (Cocobi 밝은 톤) */
+.quiz-screen {
+  position: fixed;
+  inset: 0;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: linear-gradient(175deg, #fff7de 0%, #ffe9f1 52%, #e7f4ff 100%);
 }
-.loading {
-  opacity: 0.85;
-  font-size: 15px;
+.quiz-card {
+  width: 100%;
+  max-width: 440px;
+  background: #fffdf7;
+  border-radius: 24px;
+  padding: 28px 26px 32px;
+  box-shadow: 0 16px 40px rgba(90, 59, 30, 0.14);
+  animation: fadeIn 0.3s ease;
+}
+.quiz-logo {
+  display: block;
+  width: 92px;
+  height: auto;
+  margin: 0 auto 20px;
+}
+.center-card {
+  text-align: center;
+  padding: 64px 26px;
+}
+.loading-text {
   margin-top: 18px;
+  color: #8a6a4a;
+  font-size: 15px;
+  font-weight: 600;
 }
 .spinner {
-  width: 44px;
-  height: 44px;
+  width: 46px;
+  height: 46px;
   margin: 0 auto;
-  border: 4px solid rgba(255, 255, 255, 0.2);
-  border-top-color: #a06dff;
+  border: 5px solid #f2e7d6;
+  border-top-color: #ffce1f;
   border-radius: 50%;
   animation: spin 0.9s linear infinite;
 }
-
-/* quiz */
 .progress {
-  height: 8px;
+  height: 10px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.12);
+  background: #f1e7d8;
   overflow: hidden;
 }
 .progress-bar {
   height: 100%;
-  background: linear-gradient(90deg, #6d8bff, #a06dff);
+  background: linear-gradient(90deg, #ffd52e, #ffb01f);
   border-radius: 999px;
   transition: width 0.3s ease;
 }
@@ -175,16 +199,17 @@ button {
   display: block;
   text-align: right;
   font-size: 13px;
-  opacity: 0.6;
+  color: #b09270;
   margin-top: 8px;
 }
 .question {
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.6;
+  color: #5b3b1e;
   word-break: keep-all;
-  margin: 34px 0 30px;
-  min-height: 96px;
+  margin: 26px 0 28px;
+  min-height: 92px;
   display: flex;
   align-items: center;
 }
@@ -194,23 +219,34 @@ button {
 }
 .choice {
   flex: 1;
-  padding: 18px;
-  border-radius: 14px;
+  padding: 17px;
+  border-radius: 16px;
   font-size: 17px;
-  font-weight: 700;
-  transition: transform 0.1s ease, background 0.2s ease;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-}
-.choice:hover {
-  transform: translateY(-1px);
+  font-weight: 800;
+  border: 2px solid transparent;
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
 }
 .choice.yes {
-  background: rgba(109, 139, 255, 0.28);
-  color: #eaf0ff;
+  background: #ffce1f;
+  color: #5b3b1e;
+  box-shadow: 0 5px 0 #e0a800;
 }
 .choice.no {
-  background: rgba(255, 255, 255, 0.07);
-  color: #eaf0ff;
+  background: #ffffff;
+  color: #9a7b5a;
+  border-color: #ecdcc6;
+  box-shadow: 0 5px 0 #ecdcc6;
+}
+.choice:hover {
+  transform: translateY(-2px);
+}
+.choice.yes:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 #e0a800;
+}
+.choice.no:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 #ecdcc6;
 }
 
 /* result */
@@ -344,8 +380,9 @@ button {
 }
 
 .error {
-  color: #ff9d9d;
+  color: #d84a42;
   font-size: 14px;
+  font-weight: 600;
   text-align: center;
   margin-bottom: 12px;
 }

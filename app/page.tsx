@@ -151,9 +151,11 @@ export default function Home() {
   // ---------- 로딩 ----------
   if (step === "loading") {
     return (
-      <main className="card center">
-        <div className="spinner" />
-        <p className="loading">🔮 당신과 닮은 캐릭터를 찾는 중…</p>
+      <main className="quiz-screen">
+        <div className="quiz-card center-card">
+          <div className="spinner" />
+          <p className="loading-text">🔮 나와 닮은 코코비 친구를 찾는 중…</p>
+        </div>
       </main>
     );
   }
@@ -229,25 +231,29 @@ export default function Home() {
   const q = order[idx];
   const progress = Math.round((idx / total) * 100);
   return (
-    <main className="card quiz">
-      <div className="progress">
-        <div className="progress-bar" style={{ width: `${progress}%` }} />
-      </div>
-      <span className="progress-text">
-        {idx + 1} / {total}
-      </span>
+    <main className="quiz-screen">
+      <div className="quiz-card">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className="quiz-logo" src="/logo.png" alt="Cocobi" />
+        <div className="progress">
+          <div className="progress-bar" style={{ width: `${progress}%` }} />
+        </div>
+        <span className="progress-text">
+          {idx + 1} / {total}
+        </span>
 
-      {error && <p className="error">{error}</p>}
+        {error && <p className="error">{error}</p>}
 
-      <p className="question">{q.text}</p>
+        <p className="question">{q.text}</p>
 
-      <div className="choices">
-        <button className="choice yes" onClick={() => answer(true)}>
-          예
-        </button>
-        <button className="choice no" onClick={() => answer(false)}>
-          아니오
-        </button>
+        <div className="choices">
+          <button className="choice yes" onClick={() => answer(true)}>
+            예
+          </button>
+          <button className="choice no" onClick={() => answer(false)}>
+            아니오
+          </button>
+        </div>
       </div>
     </main>
   );
