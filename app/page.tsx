@@ -126,17 +126,22 @@ export default function Home() {
   // ---------- 인트로 ----------
   if (step === "intro") {
     return (
-      <main className="card intro">
-        <div className="intro-emoji">🦕</div>
-        <h1>나와 닮은 코코비 캐릭터 찾기</h1>
-        <p className="subtitle">
-          엉뚱한 질문 {total}개에 답하면,
-          <br />
-          당신과 꼭 닮은 코코비 캐릭터를 찾아드려요!
-        </p>
-        <button className="primary big" onClick={() => setStep("quiz")}>
-          시작하기
-        </button>
+      <main className="intro-screen">
+        <div className="intro-inner">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="brand-logo" src="/logo.png" alt="Cocobi" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="hero-img" src="/hero.png" alt="코코비 캐릭터와 친구들" />
+          <h1 className="intro-title">
+            나와 닮은
+            <br />
+            코코비 캐릭터 찾기
+          </h1>
+          <p className="intro-sub">나와 꼭 닮은 코코비 친구를 찾아드릴게요!</p>
+          <button className="start-btn" onClick={() => setStep("quiz")}>
+            시작하기 🎨
+          </button>
+        </div>
       </main>
     );
   }
