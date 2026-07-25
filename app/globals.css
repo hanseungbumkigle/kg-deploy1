@@ -144,6 +144,7 @@ button {
   inset: 0;
   overflow: auto;
   display: flex;
+  flex-direction: column;
   padding: 24px;
   background: linear-gradient(175deg, #fff7de 0%, #ffe9f1 52%, #e7f4ff 100%);
 }
@@ -426,6 +427,13 @@ button {
 }
 
 /* 공유 */
+.capture-footer {
+  text-align: center;
+  color: #b0956f;
+  font-size: 13px;
+  font-weight: 700;
+  margin-top: 18px;
+}
 .share-card-img {
   display: block;
   width: 100%;

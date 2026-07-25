@@ -20,7 +20,7 @@ const { characters } = charactersData as { characters: Character[] };
 
 const pad = (i: number | string) => String(i).padStart(2, "0");
 
-function findByIdx(idx: string): Character | undefined {
+function findByIdx(idx: string | number): Character | undefined {
   const n = Number(idx);
   return characters.find((c) => Number(c.index) === n);
 }
@@ -33,6 +33,24 @@ function siteBase(): string {
   const vurl = process.env.VERCEL_URL;
   if (vurl) return `https://${vurl}`;
   return "http://localhost:3000";
+}
+
+type Payload = {
+  r?: string;
+  b?: { i: number | string; c?: string } | null;
+  w?: { i: number | string; c?: string } | null;
+};
+
+function decodePayload(d?: string): Payload | null {
+  if (!d) return null;
+  try {
+    let s = d.replace(/-/g, "+").replace(/_/g, "/");
+    while (s.length % 4) s += "=";
+    const json = Buffer.from(s, "base64").toString("utf-8");
+    return JSON.parse(json) as Payload;
+  } catch {
+    return null;
+  }
 }
 
 export function generateStaticParams() {
@@ -55,20 +73,55 @@ export function generateMetadata({ params }: { params: { idx: string } }): Metad
       images: [{ url: card, width: 1200, height: 630 }],
       type: "website",
     },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: [card],
-    },
+    twitter: { card: "summary_large_image", title, description, images: [card] },
   };
 }
 
-export default function SharedResult({ params }: { params: { idx: string } }) {
+function CompatCard({
+  kind,
+  ch,
+  comment,
+}: {
+  kind: "good" | "bad";
+  ch: Character;
+  comment?: string;
+}) {
+  return (
+    <div className={`compat-card ${kind}`}>
+      <span className="compat-label">{kind === "good" ? "💚 잘 맞아요" : "💥 안 맞아요"}</span>
+      <div className="compat-row">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          className="avatar"
+          src={`/characters/${pad(ch.index)}.png`}
+          alt={ch.name}
+          style={{ width: 48, height: 48 }}
+        />
+        <div>
+          <b>{ch.name}</b>
+          <span className="compat-tag">{ch.tagline}</span>
+        </div>
+      </div>
+      {comment && <p className="compat-comment">{comment}</p>}
+    </div>
+  );
+}
+
+export default function SharedResult({
+  params,
+  searchParams,
+}: {
+  params: { idx: string };
+  searchParams?: { d?: string };
+}) {
   const c = findByIdx(params.idx);
   if (!c) notFound();
 
+  const data = decodePayload(searchParams?.d);
+  const bestCh = data?.b ? findByIdx(data.b.i) : undefined;
+  const worstCh = data?.w ? findByIdx(data.w.i) : undefined;
   const card = `/cards/${pad(c.index)}.png`;
+
   return (
     <main className="quiz-screen">
       <div className="quiz-card">
@@ -76,6 +129,13 @@ export default function SharedResult({ params }: { params: { idx: string } }) {
 
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img className="share-card-img" src={card} alt={`나는 ${c.name}`} />
+
+        {data?.r && (
+          <section className="rsec reason-sec">
+            <h3 className="rsec-title">✨ 나와 닮은 점</h3>
+            <p className="reason">{data.r}</p>
+          </section>
+        )}
 
         <section className="rsec">
           <h3 className="rsec-title">🦕 {c.name} 캐릭터 정보</h3>
@@ -93,6 +153,16 @@ export default function SharedResult({ params }: { params: { idx: string } }) {
             </div>
           </div>
         </section>
+
+        {(bestCh || worstCh) && (
+          <section className="rsec">
+            <h3 className="rsec-title">🤝 궁합</h3>
+            <div className="compat">
+              {bestCh && <CompatCard kind="good" ch={bestCh} comment={data?.b?.c} />}
+              {worstCh && <CompatCard kind="bad" ch={worstCh} comment={data?.w?.c} />}
+            </div>
+          </section>
+        )}
 
         <Link href="/" className="restart-btn">
           나도 테스트하기 🎨

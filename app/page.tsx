@@ -1,7 +1,15 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import questionsData from "@/app/data/questions.json";
+
+// 결과를 URL에 담기 위한 base64url 인코딩
+function b64urlEncode(str: string): string {
+  const bytes = new TextEncoder().encode(str);
+  let bin = "";
+  bytes.forEach((b) => (bin += String.fromCharCode(b)));
+  return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
 
 type Question = { id: number; axis: string; yes: string; text: string };
 type CompatCard = { name: string; tagline: string; index: string; comment?: string };
@@ -85,6 +93,8 @@ export default function Home() {
   const [result, setResult] = useState<ResultData | null>(null);
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const captureRef = useRef<HTMLDivElement>(null);
 
   const total = order.length;
 
@@ -149,8 +159,19 @@ export default function Home() {
     }
   }
 
-  function copyLink(index: number | string) {
-    const url = `${window.location.origin}/r/${index}`;
+  function shareUrl(r: ResultData): string {
+    const idx = r.character?.index ?? "";
+    const payload = {
+      r: r.reason,
+      b: r.best ? { i: r.best.index, c: r.best.comment || "" } : null,
+      w: r.worst ? { i: r.worst.index, c: r.worst.comment || "" } : null,
+    };
+    const d = b64urlEncode(JSON.stringify(payload));
+    return `${window.location.origin}/r/${idx}?d=${d}`;
+  }
+
+  function copyLink(r: ResultData) {
+    const url = shareUrl(r);
     if (navigator.clipboard?.writeText) {
       navigator.clipboard.writeText(url).then(markCopied, () => fallbackCopy(url));
     } else {
@@ -158,14 +179,30 @@ export default function Home() {
     }
   }
 
-  function saveImage(index: number | string, name: string) {
-    const file = String(index).padStart(2, "0");
-    const a = document.createElement("a");
-    a.href = `/cards/${file}.png`;
-    a.download = `cocobi_${name}.png`;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
+  async function saveImage(name: string) {
+    const node = captureRef.current;
+    if (!node) return;
+    setSaving(true);
+    try {
+      const html2canvas = (await import("html2canvas")).default;
+      const canvas = await html2canvas(node, {
+        backgroundColor: "#fffdf7",
+        scale: 2,
+        useCORS: true,
+        logging: false,
+      });
+      const dataUrl = canvas.toDataURL("image/png");
+      const a = document.createElement("a");
+      a.href = dataUrl;
+      a.download = `cocobi_${name}.png`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    } catch {
+      // 캡처 실패 시 무시
+    } finally {
+      setSaving(false);
+    }
   }
 
   // ---------- 인트로 ----------
@@ -209,6 +246,7 @@ export default function Home() {
     return (
       <main className="quiz-screen">
         <div className="quiz-card">
+          <div className="capture" ref={captureRef}>
           <p className="result-lead">나와 닮은 코코비는</p>
 
           {c && (
@@ -279,15 +317,22 @@ export default function Home() {
             </section>
           )}
 
+          <p className="capture-footer">🔮 나와 닮은 코코비 캐릭터 찾기</p>
+          </div>
+
           {c && (
             <section className="rsec">
               <h3 className="rsec-title">📤 결과 공유하기</h3>
               <div className="share-row">
-                <button className="share-btn" onClick={() => copyLink(c.index)}>
+                <button className="share-btn" onClick={() => copyLink(result)}>
                   {copied ? "✅ 복사됨!" : "🔗 링크 복사"}
                 </button>
-                <button className="share-btn" onClick={() => saveImage(c.index, c.name)}>
-                  🖼️ 이미지 저장
+                <button
+                  className="share-btn"
+                  onClick={() => saveImage(c.name)}
+                  disabled={saving}
+                >
+                  {saving ? "저장 중…" : "🖼️ 이미지 저장"}
                 </button>
               </div>
             </section>
