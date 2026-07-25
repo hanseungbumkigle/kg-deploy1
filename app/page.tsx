@@ -98,8 +98,8 @@ export default function Home() {
       if (!res.ok) throw new Error(data.error || "결과를 불러오지 못했습니다.");
       setResult(data);
       setStep("result");
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "알 수 없는 오류가 발생했습니다.");
+    } catch {
+      setError("결과를 불러오지 못했어요. 네트워크를 확인하고 다시 시도해 주세요.");
       setStep("quiz");
     }
   }

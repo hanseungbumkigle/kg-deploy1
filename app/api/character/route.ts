@@ -6,6 +6,8 @@ import compatibilityData from "@/app/data/compatibility.json";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+// gpt-5.5 응답이 수 초 걸리므로 Vercel 함수 제한시간을 넉넉히 (기본 10초 → 60초)
+export const maxDuration = 60;
 
 type Axis = "EI" | "SN" | "TF" | "JP";
 type Question = { id: number; axis: Axis; yes: string; text: string };
