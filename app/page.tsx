@@ -45,17 +45,19 @@ function Avatar({
   name,
   size,
 }: {
-  index: string;
+  index: string | number;
   name: string;
   size: number;
 }) {
   const [err, setErr] = useState(false);
   const style = { width: size, height: size } as const;
+  // 인덱스 숫자(1,2,…)를 파일명 2자리(01,02,…)로 매핑
+  const file = String(index ?? "").padStart(2, "0");
   if (err || !index) {
     return (
       <div
         className="avatar avatar-dummy"
-        style={{ ...style, background: colorFromString(index || name) }}
+        style={{ ...style, background: colorFromString(String(index) || name) }}
       >
         {name?.[0] ?? "?"}
       </div>
@@ -65,7 +67,7 @@ function Avatar({
     // eslint-disable-next-line @next/next/no-img-element
     <img
       className="avatar"
-      src={`/characters/${index}.png`}
+      src={`/characters/${file}.png`}
       alt={name}
       style={style}
       onError={() => setErr(true)}

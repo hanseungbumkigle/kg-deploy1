@@ -21,7 +21,7 @@ type Character = {
   dislikes: string;
   tagline: string;
   description: string;
-  index: string;
+  index: number | string;
 };
 type Compat = {
   best: { type: string; name: string };
