@@ -164,65 +164,82 @@ export default function Home() {
   if (step === "result" && result) {
     const c = result.character;
     return (
-      <main className="card result">
-        <p className="result-lead">당신과 닮은 코코비는…</p>
+      <main className="quiz-screen">
+        <div className="quiz-card">
+          <p className="result-lead">나와 닮은 코코비는</p>
 
-        {c && (
-          <>
-            <div className="hero">
-              <Avatar index={c.index} name={c.name} size={104} />
-              <div className="hero-text">
-                <h2>{c.name}</h2>
-                <span className="tag">{c.tagline}</span>
-                <span className="age">{c.age}살</span>
+          {c && (
+            <>
+              <div className="result-hero">
+                <Avatar index={c.index} name={c.name} size={132} />
+                <h2 className="result-name">{c.name}</h2>
+                <span className="result-tag">{c.tagline}</span>
               </div>
-            </div>
 
-            <p className="reason">{result.reason}</p>
+              {/* AI가 써 준 '닮은 이유' */}
+              <section className="rsec reason-sec">
+                <h3 className="rsec-title">✨ 나와 닮은 점</h3>
+                <p className="reason">{result.reason}</p>
+              </section>
 
-            <div className="traits">
-              <div className="trait"><b>장점</b> {c.pros}</div>
-              <div className="trait"><b>단점</b> {c.cons}</div>
-              <div className="trait"><b>좋아함</b> {c.likes}</div>
-              <div className="trait"><b>싫어함</b> {c.dislikes}</div>
-            </div>
-
-            <p className="desc">{c.description}</p>
-          </>
-        )}
-
-        <div className="compat">
-          {result.best && (
-            <div className="compat-card good">
-              <span className="compat-label">💚 잘 맞아요</span>
-              <div className="compat-row">
-                <Avatar index={result.best.index} name={result.best.name} size={48} />
-                <div>
-                  <b>{result.best.name}</b>
-                  <span className="compat-tag">{result.best.tagline}</span>
+              {/* DB에서 불러온 캐릭터 정보 */}
+              <section className="rsec">
+                <h3 className="rsec-title">🦕 {c.name} 캐릭터 정보</h3>
+                <div className="info-sec">
+                  <div className="info-row">
+                    <span className="info-key">나이</span>
+                    <span className="info-val">{c.age}살</span>
+                  </div>
+                  <p className="desc">{c.description}</p>
+                  <div className="traits">
+                    <div className="trait"><b>장점</b> {c.pros}</div>
+                    <div className="trait"><b>단점</b> {c.cons}</div>
+                    <div className="trait"><b>좋아함</b> {c.likes}</div>
+                    <div className="trait"><b>싫어함</b> {c.dislikes}</div>
+                  </div>
                 </div>
-              </div>
-              {result.best.comment && <p className="compat-comment">{result.best.comment}</p>}
-            </div>
+              </section>
+            </>
           )}
-          {result.worst && (
-            <div className="compat-card bad">
-              <span className="compat-label">💥 안 맞아요</span>
-              <div className="compat-row">
-                <Avatar index={result.worst.index} name={result.worst.name} size={48} />
-                <div>
-                  <b>{result.worst.name}</b>
-                  <span className="compat-tag">{result.worst.tagline}</span>
-                </div>
+
+          {(result.best || result.worst) && (
+            <section className="rsec">
+              <h3 className="rsec-title">🤝 궁합</h3>
+              <div className="compat">
+                {result.best && (
+                  <div className="compat-card good">
+                    <span className="compat-label">💚 잘 맞아요</span>
+                    <div className="compat-row">
+                      <Avatar index={result.best.index} name={result.best.name} size={48} />
+                      <div>
+                        <b>{result.best.name}</b>
+                        <span className="compat-tag">{result.best.tagline}</span>
+                      </div>
+                    </div>
+                    {result.best.comment && <p className="compat-comment">{result.best.comment}</p>}
+                  </div>
+                )}
+                {result.worst && (
+                  <div className="compat-card bad">
+                    <span className="compat-label">💥 안 맞아요</span>
+                    <div className="compat-row">
+                      <Avatar index={result.worst.index} name={result.worst.name} size={48} />
+                      <div>
+                        <b>{result.worst.name}</b>
+                        <span className="compat-tag">{result.worst.tagline}</span>
+                      </div>
+                    </div>
+                    {result.worst.comment && <p className="compat-comment">{result.worst.comment}</p>}
+                  </div>
+                )}
               </div>
-              {result.worst.comment && <p className="compat-comment">{result.worst.comment}</p>}
-            </div>
+            </section>
           )}
+
+          <button className="restart-btn" onClick={restart}>
+            🔄 다시 하기
+          </button>
         </div>
-
-        <button className="primary" onClick={restart}>
-          🔄 다시 하기
-        </button>
       </main>
     );
   }
