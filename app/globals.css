@@ -409,6 +409,10 @@ button {
   word-break: keep-all;
 }
 .restart-btn {
+  display: block;
+  box-sizing: border-box;
+  text-align: center;
+  text-decoration: none;
   margin-top: 26px;
   width: 100%;
   padding: 15px;
@@ -419,6 +423,39 @@ button {
   font-weight: 800;
   box-shadow: 0 5px 0 #e0a800;
   transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+
+/* 공유 */
+.share-card-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  box-shadow: 0 8px 18px rgba(90, 59, 30, 0.15);
+  margin-bottom: 4px;
+}
+.share-row {
+  display: flex;
+  gap: 10px;
+}
+.share-btn {
+  flex: 1;
+  padding: 13px;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 800;
+  background: #ffffff;
+  color: #6b4e2a;
+  border: 2px solid #ecdcc6;
+  box-shadow: 0 4px 0 #ecdcc6;
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+.share-btn:hover {
+  transform: translateY(-2px);
+}
+.share-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #ecdcc6;
 }
 .restart-btn:hover {
   transform: translateY(-2px);

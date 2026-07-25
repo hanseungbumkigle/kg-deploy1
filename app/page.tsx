@@ -84,6 +84,7 @@ export default function Home() {
   const [answers, setAnswers] = useState<Record<string, boolean>>({});
   const [result, setResult] = useState<ResultData | null>(null);
   const [error, setError] = useState("");
+  const [copied, setCopied] = useState(false);
 
   const total = order.length;
 
@@ -122,7 +123,49 @@ export default function Home() {
     setIdx(0);
     setResult(null);
     setError("");
+    setCopied(false);
     setStep("intro");
+  }
+
+  function markCopied() {
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 2000);
+  }
+
+  function fallbackCopy(text: string) {
+    try {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      document.execCommand("copy");
+      ta.remove();
+      markCopied();
+    } catch {
+      // 복사 실패 시 조용히 무시
+    }
+  }
+
+  function copyLink(index: number | string) {
+    const url = `${window.location.origin}/r/${index}`;
+    if (navigator.clipboard?.writeText) {
+      navigator.clipboard.writeText(url).then(markCopied, () => fallbackCopy(url));
+    } else {
+      fallbackCopy(url);
+    }
+  }
+
+  function saveImage(index: number | string, name: string) {
+    const file = String(index).padStart(2, "0");
+    const a = document.createElement("a");
+    a.href = `/cards/${file}.png`;
+    a.download = `cocobi_${name}.png`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
   }
 
   // ---------- 인트로 ----------
@@ -232,6 +275,20 @@ export default function Home() {
                     {result.worst.comment && <p className="compat-comment">{result.worst.comment}</p>}
                   </div>
                 )}
+              </div>
+            </section>
+          )}
+
+          {c && (
+            <section className="rsec">
+              <h3 className="rsec-title">📤 결과 공유하기</h3>
+              <div className="share-row">
+                <button className="share-btn" onClick={() => copyLink(c.index)}>
+                  {copied ? "✅ 복사됨!" : "🔗 링크 복사"}
+                </button>
+                <button className="share-btn" onClick={() => saveImage(c.index, c.name)}>
+                  🖼️ 이미지 저장
+                </button>
               </div>
             </section>
           )}
