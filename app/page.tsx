@@ -319,7 +319,10 @@ export default function Home() {
             </section>
           )}
 
-          <p className="capture-footer">🔮 나와 닮은 코코비 캐릭터 찾기</p>
+          {/* 화면엔 표시하되, 이미지 저장(html2canvas) 캡처에서는 제외 */}
+          <p className="capture-footer" data-html2canvas-ignore="true">
+            🔮 나와 닮은 코코비 캐릭터 찾기
+          </p>
           </div>
 
           {c && (
