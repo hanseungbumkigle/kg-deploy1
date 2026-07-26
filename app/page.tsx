@@ -357,8 +357,6 @@ export default function Home() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img className="quiz-lineup" src="/char_lineup.png" alt="코코비 친구들" />
         <div className="quiz-card">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="quiz-logo" src="/logo.png" alt="Cocobi" />
           <div className="progress">
             <div className="progress-bar" style={{ width: `${progress}%` }} />
           </div>

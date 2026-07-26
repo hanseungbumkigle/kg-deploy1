@@ -169,6 +169,7 @@ button {
 .quiz-stack .quiz-card {
   margin: 0;
   animation: none;
+  padding-top: 42px; /* 로고 제거 후, 얹힌 캐릭터 아래 여백 확보 */
 }
 .quiz-lineup {
   display: block;
