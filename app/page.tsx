@@ -353,27 +353,31 @@ export default function Home() {
   const progress = Math.round((idx / total) * 100);
   return (
     <main className="quiz-screen">
-      <div className="quiz-card">
+      <div className="quiz-stack">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className="quiz-logo" src="/logo.png" alt="Cocobi" />
-        <div className="progress">
-          <div className="progress-bar" style={{ width: `${progress}%` }} />
-        </div>
-        <span className="progress-text">
-          {idx + 1} / {total}
-        </span>
+        <img className="quiz-lineup" src="/char_lineup.png" alt="코코비 친구들" />
+        <div className="quiz-card">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="quiz-logo" src="/logo.png" alt="Cocobi" />
+          <div className="progress">
+            <div className="progress-bar" style={{ width: `${progress}%` }} />
+          </div>
+          <span className="progress-text">
+            {idx + 1} / {total}
+          </span>
 
-        {error && <p className="error">{error}</p>}
+          {error && <p className="error">{error}</p>}
 
-        <p className="question">{q.text}</p>
+          <p className="question">{q.text}</p>
 
-        <div className="choices">
-          <button className="choice yes" onClick={() => answer(true)}>
-            예
-          </button>
-          <button className="choice no" onClick={() => answer(false)}>
-            아니오
-          </button>
+          <div className="choices">
+            <button className="choice yes" onClick={() => answer(true)}>
+              예
+            </button>
+            <button className="choice no" onClick={() => answer(false)}>
+              아니오
+            </button>
+          </div>
         </div>
       </div>
     </main>
