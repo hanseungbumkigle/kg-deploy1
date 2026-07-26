@@ -251,11 +251,13 @@ export default function Home() {
 
           {c && (
             <>
-              <div className="result-hero">
-                <Avatar index={c.index} name={c.name} size={132} />
-                <h2 className="result-name">{c.name}</h2>
-                <span className="result-tag">{c.tagline}</span>
-              </div>
+              {/* 결과 카드 이미지 (공유 카드와 동일) */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                className="share-card-img"
+                src={`/cards/${String(c.index).padStart(2, "0")}.png`}
+                alt={`나는 ${c.name}`}
+              />
 
               {/* AI가 써 준 '닮은 이유' */}
               <section className="rsec reason-sec">
