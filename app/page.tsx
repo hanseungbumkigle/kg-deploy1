@@ -93,6 +93,7 @@ export default function Home() {
   const [result, setResult] = useState<ResultData | null>(null);
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
+  const [linking, setLinking] = useState(false);
   const [saving, setSaving] = useState(false);
   const captureRef = useRef<HTMLDivElement>(null);
 
@@ -170,12 +171,56 @@ export default function Home() {
     return `${window.location.origin}/r/${idx}?d=${d}`;
   }
 
-  function copyLink(r: ResultData) {
-    const url = shareUrl(r);
-    if (navigator.clipboard?.writeText) {
-      navigator.clipboard.writeText(url).then(markCopied, () => fallbackCopy(url));
-    } else {
+  async function shortenUrl(longUrl: string): Promise<string> {
+    try {
+      const res = await fetch("/api/shorten", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: longUrl }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data?.short) return data.short as string;
+      }
+    } catch {
+      // 실패 시 원본 링크 사용
+    }
+    return longUrl;
+  }
+
+  async function copyLink(r: ResultData) {
+    if (linking) return;
+    setLinking(true);
+    const longUrl = shareUrl(r);
+    let shortPromise: Promise<string> | null = null;
+    const getShort = () => (shortPromise ||= shortenUrl(longUrl));
+    try {
+      // Safari 등에서 제스처 유지를 위해 ClipboardItem+Promise 우선 시도
+      if (typeof ClipboardItem !== "undefined" && navigator.clipboard?.write) {
+        try {
+          const item = new ClipboardItem({
+            "text/plain": getShort().then((u) => new Blob([u], { type: "text/plain" })),
+          });
+          await navigator.clipboard.write([item]);
+          markCopied();
+          return;
+        } catch {
+          // 폴백으로 진행
+        }
+      }
+      const url = await getShort();
+      if (navigator.clipboard?.writeText) {
+        try {
+          await navigator.clipboard.writeText(url);
+          markCopied();
+          return;
+        } catch {
+          // 폴백으로 진행
+        }
+      }
       fallbackCopy(url);
+    } finally {
+      setLinking(false);
     }
   }
 
@@ -329,8 +374,12 @@ export default function Home() {
             <section className="rsec">
               <h3 className="rsec-title">📤 결과 공유하기</h3>
               <div className="share-row">
-                <button className="share-btn" onClick={() => copyLink(result)}>
-                  {copied ? "✅ 복사됨!" : "🔗 링크 복사"}
+                <button
+                  className="share-btn"
+                  onClick={() => copyLink(result)}
+                  disabled={linking}
+                >
+                  {linking ? "링크 만드는 중…" : copied ? "✅ 복사됨!" : "🔗 링크 복사"}
                 </button>
                 <button
                   className="share-btn"
